@@ -24,9 +24,9 @@ class Ship:
         self.y = float(self.rect.centery)
 
         # Rotation attributes
-        self.angle = 0  # Degrees
+        self.angle = 0  # Degrees (0 = pointing right, 90 = pointing down, etc.)
 
-        # Movement flag; start with a ship that's not moving.
+        # Movement flags; start with a ship that's not moving.
         self.moving_forward = False
         self.moving_backward = False
         self.rotating_right = False
@@ -36,27 +36,30 @@ class Ship:
         """Update the ship's position based on movement flag."""
         # Handle rotation
         if self.rotating_right:
-            self.angle -= self.settings.ship_rotation_speed
-        if self.rotating_left:
             self.angle += self.settings.ship_rotation_speed
-        
+        if self.rotating_left:
+            self.angle -= self.settings.ship_rotation_speed
+
         # Keep angle in 0-360 range
         self.angle = self.angle % 360
         
         # Handle movement
         if self.moving_forward or self.moving_backward:
             # Convert angle to radians for trigonometry
-            radians = math.radians(self.angle)
-            
+            radians = math.radians(self.angle + 90)  # Adjusting so 0° points right
+
             # Calculate velocity components
             speed = self.settings.ship_speed
-            if self.moving_backward:
+            if self.moving_forward:
                 speed = -speed
             
             # Update position using velocity components
+            # El ángulo 0° = nave apuntando hacia la derecha
+            # El ángulo 90° = nave apuntando hacia abajo
+            # Se usa trigonometría para calcular la dirección:
             self.x += speed * math.cos(radians)
             self.y += speed * math.sin(radians)
-            
+
             # Wrap around screen edges (classic Asteroids behavior)
             if self.x < 0:
                 self.x = self.settings.screen_width
@@ -73,7 +76,7 @@ class Ship:
         self.rect.centery = self.y
 
         # Rotate the image
-        self.image = pygame.transform.rotate(self.original_image, self.angle)
+        self.image = pygame.transform.rotate(self.original_image, -self.angle)
         self.rect = self.image.get_rect(center=(self.x, self.y))
 
     def blitme(self):
