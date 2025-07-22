@@ -10,14 +10,13 @@ class Settings:
 
         # Ship settings
         self.ship_speed = 1.5
-        self.ship_rotation_speed = 3  # Degrees per frame
+        self.ship_rotation_speed = 2.5  # Degrees per frame
 
         # # Bullet settings
-        self.bullet_speed = 2.0
-        self.bullet_width = 3
-        self.bullet_height = 15
+        self.bullet_speed = 3.5
+        self.bullet_width = 10
+        self.bullet_height = 10
         self.bullet_color = (60, 60, 60)
-        self.bullets_allowed = 3
 
         # # Alien settings
         # self.alien_speed = 1.0
