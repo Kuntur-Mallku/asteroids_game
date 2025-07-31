@@ -16,6 +16,12 @@ class Ship:
         self.image = self.original_image
         self.rect = self.image.get_rect()
 
+        # Create a smaller collision rect for more accurate collision detection
+        self.collision_padding = 8  # Pixels to shrink from each side
+        self.collision_rect = pygame.Rect(0, 0, 
+                                        self.rect.width - (self.collision_padding * 2),
+                                        self.rect.height - (self.collision_padding * 2))
+
         # Start each new ship at the center of the screen.
         self.rect.center = self.screen_rect.center
 
@@ -74,6 +80,9 @@ class Ship:
         # Update rect position
         self.rect.centerx = self.x
         self.rect.centery = self.y
+
+        # Update collision rect to stay centered with the ship
+        self.collision_rect.center = (self.x, self.y)
 
         # Rotate the image
         self.image = pygame.transform.rotate(self.original_image, -self.angle)
